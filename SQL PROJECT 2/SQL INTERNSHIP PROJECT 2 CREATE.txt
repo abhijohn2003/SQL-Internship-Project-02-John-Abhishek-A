@@ -1,0 +1,132 @@
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATANASE RESULT_PROCESS_SYS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATANASE RESULT_PROCESS_SYS' at line 1
+mysql> CREATE DATABASE RESULT_PROCESS_SYS;
+Query OK, 1 row affected (0.137 sec)
+
+mysql> USE RESULT_PROCESS_SYS;
+Database changed
+mysql> CREATE TABLE STUDENTS(STUDENT_ID INT PRIMARY KEY,
+    -> NAME VARCHAR(100),
+    -> DEPARTMENT VARCHAR(100));
+Query OK, 0 rows affected (0.386 sec)
+
+mysql> CREATE TABLE COURSES(COURSE_ID INT PRIMARY KEY,
+    -> COURSE_NAME VARCHAR(100),
+    -> CREDITS INT);
+Query OK, 0 rows affected (0.266 sec)
+
+mysql> CREATE TABLE SEMESTERS(
+    -> SEMESTER_ID INT PRIMARY KEY,
+    -> YEAR INT,
+    -> TERM VARCHAR(20));
+Query OK, 0 rows affected (0.279 sec)
+
+mysql> CREATE TABLE GRADES(
+    -> GRADE_ID INT PRIMARY KEY AUTO_INCREMENT,
+    -> STUDENT_ID INT,
+    -> COURSE_ID INT,
+    -> SEMESTER_ID INT,
+    -> MARKS INT,
+    -> GRADE CHAR(2),
+    -> GPA_POINTS DECIMAL(4,2),
+    -> FOREIGN KEY (STUDENT_ID) REFERENCES STUDENTS(STUDENT_ID),
+    -> FOREIGN KEY (COURSE_ID) REFERENCES COURSES(COURSE_ID),
+    -> FOREIGN KEY (SEMESTER_ID) REFERENCES SEMESTERS(SEMESTER_ID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 11
+mysql> CREATE TABLE GRADES(
+    -> GRADE_ID INT PRIMARY KEY AUTO_INCREMENT,
+    -> STUDENT_ID INT,
+    -> COURSE_ID INT,
+    -> SEMESTER_ID INT,
+    -> MARKS INT,
+    -> GRADE CHAR(2),
+    -> GPA_POINTS DECIMAL(4,2),
+    -> FOREIGN KEY (STUDENT_ID) REFERENCES STUDENTS(STUDENT_ID),
+    -> FOREIGN KEY (COURSE_ID) REFERENCES COURSES(COURSE_ID),
+    -> FOREIGN KEY (SEMESTER_ID) REFERENCES SEMESTERS(SEMESTER_ID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 11
+mysql> CREATE TABLE GRADES(
+    -> GRADE_ID INT PRIMARY KEY AUTO_INCREMENT,
+    -> STUDENT_ID INT,
+    -> COURSE_ID INT,
+    -> SEMESTER_ID INT,
+    -> MARKS INT,
+    -> GRADE CHAR(2),
+    -> GPA_POINTS DECIMAL(4,2),
+    -> FOREIGN KEY (STUDENT_ID) REFERENCES STUDENTS(STUDENT_ID),
+    -> FOREIGN KEY (COURSE_ID) REFERENCES COURSES(COURSE_ID),
+    -> FOREIGN KEY (SEMESTER_ID) REFERENCES SEMESTERS(SEMESTER_ID));
+Query OK, 0 rows affected (0.725 sec)
+
+mysql> SHOW TABLES;
++------------------------------+
+| Tables_in_result_process_sys |
++------------------------------+
+| courses                      |
+| grades                       |
+| semesters                    |
+| students                     |
++------------------------------+
+4 rows in set (0.241 sec)
+
+mysql> SELECT * FROM COURSES;
+Empty set (0.139 sec)
+
+mysql> DESCRIBE COURSES;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| COURSE_ID   | int          | NO   | PRI | NULL    |       |
+| COURSE_NAME | varchar(100) | YES  |     | NULL    |       |
+| CREDITS     | int          | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.104 sec)
+
+mysql> DESCRIBE GRADES;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| GRADE_ID    | int          | NO   | PRI | NULL    | auto_increment |
+| STUDENT_ID  | int          | YES  | MUL | NULL    |                |
+| COURSE_ID   | int          | YES  | MUL | NULL    |                |
+| SEMESTER_ID | int          | YES  | MUL | NULL    |                |
+| MARKS       | int          | YES  |     | NULL    |                |
+| GRADE       | char(2)      | YES  |     | NULL    |                |
+| GPA_POINTS  | decimal(4,2) | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.044 sec)
+
+mysql> DESCRIBE SEMESTERS;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| SEMESTER_ID | int         | NO   | PRI | NULL    |       |
+| YEAR        | int         | YES  |     | NULL    |       |
+| TERM        | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.038 sec)
+
+mysql> DESCRIBE STUDENTS;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| STUDENT_ID | int          | NO   | PRI | NULL    |       |
+| NAME       | varchar(100) | YES  |     | NULL    |       |
+| DEPARTMENT | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.041 sec)
+
+mysql>

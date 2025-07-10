@@ -1,0 +1,323 @@
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bible              |
+| customers_info     |
+| information_schema |
+| laptop             |
+| librarydb          |
+| mysql              |
+| performance_schema |
+| result_process_sys |
+| sport_tournament   |
+| sunday_class       |
+| xitadel_co         |
+| zion_info          |
++--------------------+
+12 rows in set (0.271 sec)
+
+mysql> use  result_process_sys;
+Database changed
+mysql> show tables;
++------------------------------+
+| Tables_in_result_process_sys |
++------------------------------+
+| courses                      |
+| grades                       |
+| semesters                    |
+| students                     |
++------------------------------+
+4 rows in set (0.130 sec)
+
+mysql> INSERT INTO students VALUES
+    -> (1, 'John Abhishek', 'Data Analytics'),
+    -> (2, 'Ravi Kumar', 'Computer Science'),
+    -> (3, 'Asha Nair', 'IT');
+Query OK, 3 rows affected (0.525 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO courses VALUES
+    -> (101, 'Mathematics', 4),
+    -> (102, 'Database Systems', 3),
+    -> (103, 'Data Structures', 3);
+Query OK, 3 rows affected (0.255 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO semesters VALUES
+    -> (1, 2025, 'Spring'),
+    -> (2, 2025, 'Fall');
+Query OK, 2 rows affected (0.229 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO grades (student_id, course_id, semester_id, marks) VALUES
+    -> (1, 101, 1, 88),
+    -> (1, 102, 1, 77),
+    -> (1, 103, 1, 65),
+    -> (2, 101, 1, 45),
+    -> (2, 102, 1, 55),
+    -> (2, 103, 1, 35),
+    -> (3, 101, 1, 92),
+    -> (3, 102, 1, 83),
+    -> (3, 103, 1, 74);
+Query OK, 9 rows affected (0.250 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------------+---------------+------------------+
+| STUDENT_ID | NAME          | DEPARTMENT       |
++------------+---------------+------------------+
+|          1 | John Abhishek | Data Analytics   |
+|          2 | Ravi Kumar    | Computer Science |
+|          3 | Asha Nair     | IT               |
++------------+---------------+------------------+
+3 rows in set (0.010 sec)
+
+mysql> select * from courses;
++-----------+------------------+---------+
+| COURSE_ID | COURSE_NAME      | CREDITS |
++-----------+------------------+---------+
+|       101 | Mathematics      |       4 |
+|       102 | Database Systems |       3 |
+|       103 | Data Structures  |       3 |
++-----------+------------------+---------+
+3 rows in set (0.007 sec)
+
+mysql> select * from semesters;
++-------------+------+--------+
+| SEMESTER_ID | YEAR | TERM   |
++-------------+------+--------+
+|           1 | 2025 | Spring |
+|           2 | 2025 | Fall   |
++-------------+------+--------+
+2 rows in set (0.008 sec)
+
+mysql> select * from grades;
++----------+------------+-----------+-------------+-------+-------+------------+
+| GRADE_ID | STUDENT_ID | COURSE_ID | SEMESTER_ID | MARKS | GRADE | GPA_POINTS |
++----------+------------+-----------+-------------+-------+-------+------------+
+|        1 |          1 |       101 |           1 |    88 | NULL  |       NULL |
+|        2 |          1 |       102 |           1 |    77 | NULL  |       NULL |
+|        3 |          1 |       103 |           1 |    65 | NULL  |       NULL |
+|        4 |          2 |       101 |           1 |    45 | NULL  |       NULL |
+|        5 |          2 |       102 |           1 |    55 | NULL  |       NULL |
+|        6 |          2 |       103 |           1 |    35 | NULL  |       NULL |
+|        7 |          3 |       101 |           1 |    92 | NULL  |       NULL |
+|        8 |          3 |       102 |           1 |    83 | NULL  |       NULL |
+|        9 |          3 |       103 |           1 |    74 | NULL  |       NULL |
++----------+------------+-----------+-------------+-------+-------+------------+
+9 rows in set (0.007 sec)
+
+mysql> UPDATE grades
+    -> SET
+    ->     grade = CASE
+    ->         WHEN marks >= 90 THEN 'A+'
+    ->         WHEN marks >= 80 THEN 'A'
+    ->         WHEN marks >= 70 THEN 'B+'
+    ->         WHEN marks >= 60 THEN 'B'
+    ->         WHEN marks >= 50 THEN 'C'
+    ->         WHEN marks >= 40 THEN 'D'
+    ->         ELSE 'F'
+    ->     END,
+    ->     gpa_points = CASE
+    ->         WHEN marks >= 90 THEN 10
+    ->         WHEN marks >= 80 THEN 9
+    ->         WHEN marks >= 70 THEN 8
+    ->         WHEN marks >= 60 THEN 7
+    ->         WHEN marks >= 50 THEN 6
+    ->         WHEN marks >= 40 THEN 5
+    ->         ELSE 0
+    ->     END;
+Query OK, 9 rows affected (0.080 sec)
+Rows matched: 9  Changed: 9  Warnings: 0
+
+mysql> select * from grades;
++----------+------------+-----------+-------------+-------+-------+------------+
+| GRADE_ID | STUDENT_ID | COURSE_ID | SEMESTER_ID | MARKS | GRADE | GPA_POINTS |
++----------+------------+-----------+-------------+-------+-------+------------+
+|        1 |          1 |       101 |           1 |    88 | A     |       9.00 |
+|        2 |          1 |       102 |           1 |    77 | B+    |       8.00 |
+|        3 |          1 |       103 |           1 |    65 | B     |       7.00 |
+|        4 |          2 |       101 |           1 |    45 | D     |       5.00 |
+|        5 |          2 |       102 |           1 |    55 | C     |       6.00 |
+|        6 |          2 |       103 |           1 |    35 | F     |       0.00 |
+|        7 |          3 |       101 |           1 |    92 | A+    |      10.00 |
+|        8 |          3 |       102 |           1 |    83 | A     |       9.00 |
+|        9 |          3 |       103 |           1 |    74 | B+    |       8.00 |
++----------+------------+-----------+-------------+-------+-------+------------+
+9 rows in set (0.009 sec)
+
+mysql> SELECT
+    ->     s.student_id,
+    ->     s.name,
+    ->     sem.semester_id,
+    ->     ROUND(SUM(g.gpa_points * c.credits) / SUM(c.credits), 2) AS semester_gpa
+    -> FROM grades g
+    -> JOIN students s ON g.student_id = s.student_id
+    -> JOIN courses c ON g.course_id = c.course_id
+    -> JOIN semesters sem ON g.semester_id = sem.semester_id
+    -> GROUP BY s.student_id, sem.semest_id;
+ERROR 1054 (42S22): Unknown column 'sem.semest_id' in 'group statement'
+mysql> SELECT
+    ->     s.student_id,
+    ->     s.name,
+    ->     sem.semester_id,
+    ->     ROUND(SUM(g.gpa_points * c.credits) / SUM(c.credits), 2) AS semester_gpa
+    -> FROM grades g
+    -> JOIN students s ON g.student_id = s.student_id
+    -> JOIN courses c ON g.course_id = c.course_id
+    -> JOIN semesters sem ON g.semester_id = sem.semester_id
+    -> GROUP BY s.students_id, sem.semester_id;
+ERROR 1054 (42S22): Unknown column 's.students_id' in 'group statement'
+mysql> SELECT
+    ->     s.student_id,
+    ->     s.name,
+    ->     sem.semester_id,
+    ->     ROUND(SUM(g.gpa_points * c.credits) / SUM(c.credits), 2) AS semester_gpa
+    -> FROM grades g
+    -> JOIN students s ON g.student_id = s.student_id
+    -> JOIN courses c ON g.course_id = c.course_id
+    -> JOIN semesters sem ON g.semester_id = sem.semester_id
+    -> GROUP BY s.student_id, sem.semester_id;
++------------+---------------+-------------+--------------+
+| student_id | name          | semester_id | semester_gpa |
++------------+---------------+-------------+--------------+
+|          1 | John Abhishek |           1 |         8.10 |
+|          2 | Ravi Kumar    |           1 |         3.80 |
+|          3 | Asha Nair     |           1 |         9.10 |
++------------+---------------+-------------+--------------+
+3 rows in set (0.039 sec)
+
+mysql> SELECT
+    ->     student_id,
+    ->     COUNT(*) AS total_subjects,
+    ->     SUM(CASE WHEN gpa_points = 0 THEN 1 ELSE 0 END) AS failed_subjects,
+    ->     CASE
+    ->         WHEN SUM(CASE WHEN gpa_points = 0 THEN 1 ELSE 0 END) = 0 THEN 'PASS'
+    ->         ELSE 'FAIL'
+    ->     END AS status
+    -> FROM grades
+    -> GROUP BY student_id;
++------------+----------------+-----------------+--------+
+| student_id | total_subjects | failed_subjects | status |
++------------+----------------+-----------------+--------+
+|          1 |              3 |               0 | PASS   |
+|          2 |              3 |               1 | FAIL   |
+|          3 |              3 |               0 | PASS   |
++------------+----------------+-----------------+--------+
+3 rows in set (0.040 sec)
+
+mysql> WITH student_gpa AS (
+    ->     SELECT
+    ->         student_id,
+    ->         semester_id,
+    ->         ROUND(SUM(gpa_points * c.credits) / SUM(c.credits), 2) AS gpa
+    ->     FROM grades g
+    ->     JOIN courses c ON g.course_id = c.course_id
+    ->     GROUP BY student_id, semester_id
+    -> )
+    -> SELECT *,
+    ->     RANK() OVER (PARTITION BY semester_id ORDER BY gpa DESC) AS rank_in_class
+    -> FROM student_gpa;
++------------+-------------+------+---------------+
+| student_id | semester_id | gpa  | rank_in_class |
++------------+-------------+------+---------------+
+|          3 |           1 | 9.10 |             1 |
+|          1 |           1 | 8.10 |             2 |
+|          2 |           1 | 3.80 |             3 |
++------------+-------------+------+---------------+
+3 rows in set (0.047 sec)
+
+mysql> DELIMITER $$
+mysql>
+mysql> CREATE TRIGGER trg_auto_grade
+    -> BEFORE INSERT ON grades
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     DECLARE grade CHAR(2);
+    ->     DECLARE gpa DECIMAL(4,2);
+    ->
+    ->     IF NEW.marks >= 90 THEN
+    ->         SET grade = 'A+', gpa = 10;
+    ->     ELSEIF NEW.marks >= 80 THEN
+    ->         SET grade = 'A', gpa = 9;
+    ->     ELSEIF NEW.marks >= 70 THEN
+    ->         SET grade = 'B+', gpa = 8;
+    ->     ELSEIF NEW.marks >= 60 THEN
+    ->         SET grade = 'B', gpa = 7;
+    ->     ELSEIF NEW.marks >= 50 THEN
+    ->         SET grade = 'C', gpa = 6;
+    ->     ELSEIF NEW.marks >= 40 THEN
+    ->         SET grade = 'D', gpa = 5;
+    ->     ELSE
+    ->         SET grade = 'F', gpa = 0;
+    ->     END IF;
+    ->
+    ->     SET NEW.grade = grade;
+    ->     SET NEW.gpa_points = gpa;
+    -> END$$
+Query OK, 0 rows affected (0.155 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+mysql> call trg_auto_grade;
+ERROR 1305 (42000): PROCEDURE result_process_sys.trg_auto_grade does not exist
+mysql> -- Export semester 1 result
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT *
+    -> FROM grades
+    -> WHERE semester_id = 1
+    -> INTO OUTFILE '/tmp/semester1_result.csv'
+    -> FIELDS TERMINATED BY ','
+    -> ENCLOSED BY '"'
+    -> LINES TERMINATED BY '\n';
+ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+mysql> SELECT *
+    -> FROM grades
+    -> WHERE semester_id = 1
+    -> INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/semester1_result.csv'
+    -> FIELDS TERMINATED BY ','
+    -> ENCLOSED BY '"'
+    -> LINES TERMINATED BY '\n';
+ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+mysql> SELECT *
+    -> FROM grades
+    -> WHERE semester_id = 1
+    -> INTO OUTFILE ' --secure-file-priv'
+    -> FIELDS TERMINATED BY ','
+    -> ENCLOSED BY '"'
+    -> LINES TERMINATED BY '\n';
+ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+mysql> SHOW VARIABLES LIKE 'secure_file_priv';
++------------------+------------------------------------------------+
+| Variable_name    | Value                                          |
++------------------+------------------------------------------------+
+| secure_file_priv | C:\ProgramData\MySQL\MySQL Server 9.3\Uploads\ |
++------------------+------------------------------------------------+
+1 row in set (0.131 sec)
+
+mysql> SELECT student_id, course_id, semester_id, marks, grade, gpa_points
+    -> FROM grades
+    -> WHERE semester_id = 1
+    -> INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 9.3/Uploads/semester1_result.csv'
+    -> FIELDS TERMINATED BY ','
+    -> ENCLOSED BY '"'
+    -> LINES TERMINATED BY '\n';
+Query OK, 9 rows affected (0.044 sec)
+
+mysql>
